@@ -55,6 +55,7 @@ const addExcerciseByUserId = async (req, res) => {
   let { description, duration, date } = req.body;
   date = date? new Date(date): new Date();
   date = date.toString().match(/^([a-z]{3}\s[a-z]{3}\s[0-9]{2}\s[0-9]{4})/i)[0]
+  duration = duration.match(/[0-9\.]{1,}/i).join('')
   try {
     const user = await User.findOne({ _id });
 
