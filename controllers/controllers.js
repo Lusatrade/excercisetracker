@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const Excercise = require("../models/excerciseModel");
+const excerciseModel = require("../models/excerciseModel");
 
 /*
     POST /api/users
@@ -67,6 +68,9 @@ const addExcerciseByUserId = async (req, res) => {
       duration: duration,
       date: date
     });
+
+    //Change exercise _id with user _id
+    exercise._id = _id
 
     res.status(200).json(exercise);
   } catch (error) {
