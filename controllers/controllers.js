@@ -57,22 +57,20 @@ const addExcerciseByUserId = async (req, res) => {
   date = date.toString().match(/^([a-z]{3}\s[a-z]{3}\s[0-9]{2}\s[0-9]{4})/i)[0]
   duration = duration.match(/[0-9\.]{1,}/i).join('')
   try {
-    const user = await User.findOne({ _id });
-
+    let user = await User.findOne({ _id });
+    
     // if (!user) {
     //   throw new Error("User does not exist");
     // }
 
-    const exercise = await Excercise.create({
+    var exercise = await Excercise.create({
       username: user.username,
       description: description,
       duration: duration,
       date: date
     });
-
-    //Change exercise _id with user _id
-    exercise._id = _id
-
+    exercise._id = user._id
+   
     res.status(200).json(exercise);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -118,9 +116,11 @@ const getLogsByUserId = async (req, res) => {
         return a
     },[])
     
+    result.from = new Date(from).toString().match(/^([a-z]{3}\s[a-z]{3}\s[0-9]{2}\s[0-9]{4})/i)[0]
+    result.to = new Date(to).toString().match(/^([a-z]{3}\s[a-z]{3}\s[0-9]{2}\s[0-9]{4})/i)[0]
   }
     result.count = logs.length;
-
+    
     result.log = logs;
 
     res.status(200).json(result);
