@@ -58,9 +58,9 @@ const addExcerciseByUserId = async (req, res) => {
   try {
     const user = await User.findOne({ _id });
 
-    if (!user) {
-      throw new Error("User does not exist");
-    }
+    // if (!user) {
+    //   throw new Error("User does not exist");
+    // }
 
     const exercise = await Excercise.create({
       username: user.username,
@@ -98,7 +98,7 @@ const getLogsByUserId = async (req, res) => {
       _id: user._id,
       username: user.username,
       count: 0,
-      logs: [],
+      log: [],
     };
 
     let logs = await Excercise.find({
