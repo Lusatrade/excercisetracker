@@ -56,12 +56,13 @@ const addExcerciseByUserId = async (req, res) => {
   date = date? new Date(date): new Date();
   date = date.toString().match(/^([a-z]{3}\s[a-z]{3}\s[0-9]{2}\s[0-9]{4})/i)[0]
   duration = duration.match(/[0-9\.]{1,}/i).join('')
+  let result = {}
   try {
     let user = await User.findOne({ _id });
     
-    // if (!user) {
-    //   throw new Error("User does not exist");
-    // }
+    if (!user) {
+      throw new Error("User does not exist");
+    }
 
     var exercise = await Excercise.create({
       username: user.username,
@@ -69,9 +70,13 @@ const addExcerciseByUserId = async (req, res) => {
       duration: duration,
       date: date
     });
-    exercise._id = user._id
+    result._id = user._id
+    result.username = user.username
+    result.description = exercise.description
+    result.duration = exercise.duration
+    result.date = exercise.date
    
-    res.status(200).json(exercise);
+    res.status(200).json(result);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -84,7 +89,7 @@ const addExcerciseByUserId = async (req, res) => {
 const getLogsByUserId = async (req, res) => {
   const id = req.params.id;
   let { from, to, limit } = req.query;
-  limit = limit || 10000;
+  limit = parseInt(limit) || 10000;
   let timeRange = "";
   
   try {
