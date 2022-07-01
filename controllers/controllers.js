@@ -121,7 +121,7 @@ const getLogsByUserId = async (req, res) => {
   }
     result.count = logs.length;
 
-    result.logs = logs;
+    result.log = logs;
 
     res.status(200).json(result);
   } catch (error) {
